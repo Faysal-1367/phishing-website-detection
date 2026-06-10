@@ -48,6 +48,8 @@ def home():
                 result="Model not loaded. Please check model.pkl"
             )
         url = request.form.get("url", "").strip()
+        if not url.startswith(("http://", "https://")):
+         url = "https://" + url
 
         if not url:
             return render_template(

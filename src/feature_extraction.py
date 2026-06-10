@@ -2,7 +2,8 @@ import re
 from urllib.parse import urlparse
 
 def extract_features(url):
-
+    if not url.startswith(("http://", "https://")):
+     url = "https://" + url
     features = {
         'url_length': len(url),
         'domain_length': len(urlparse(url).netloc),
