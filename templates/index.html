@@ -2,7 +2,9 @@
 <html>
 <head>
 
-    <title>Phishing Website Detection</title>
+    <title>
+        Phishing Website Detection Using Machine Learning
+    </title>
 
     <style>
 
@@ -32,6 +34,7 @@
     border-radius:15px;
     box-shadow:0 4px 15px rgba(0,0,0,0.1);
     text-align:left;
+    margin:auto;
 }
 
         h1{
@@ -162,6 +165,23 @@
         hr{
             margin:20px 0;
         }
+        table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+}
+
+table th{
+    background:#667eea;
+    color:white;
+}
+
+table th,
+table td{
+    padding:12px;
+    border:1px solid #ddd;
+    text-align:center;
+}
 
     </style>
 
@@ -173,8 +193,8 @@
 <div class="card">
 
     <h1>
-        Phishing Website Detection
-    </h1>
+    Phishing Website Detection Using Machine Learning
+</h1>
 
     <form method="POST">
 
@@ -209,12 +229,22 @@
 
 <h3>Risk Level</h3>
 
-<p>
-<b>{{ risk_level or "LOW" }}</b>
+<p style="font-size:22px;font-weight:bold;color:
+{% if risk_level == 'HIGH' %}
+red
+{% elif risk_level == 'MEDIUM' %}
+orange
+{% else %}
+green
+{% endif %}
+;">
+{{ risk_level or "LOW" }}
 </p>
 <h3>Confidence Score</h3>
 
-<p>{{ confidence or 0 }}%</p>
+<div class="big-score">
+    {{ confidence or 0 }}%
+</div>
 
 <div class="progress">
     <div class="progress-bar" style="width: {{ confidence | default(0) }}%;"></div>
@@ -296,25 +326,69 @@
 {% endfor %}
 
 </ul>
+<hr>
+
+<h3>Evaluation Metrics</h3>
+
+<div style="display:flex;justify-content:space-around;text-align:center;">
+
+<div>
+<h4>Accuracy</h4>
+<p>99.55%</p>
+</div>
+
+<div>
+<h4>Precision</h4>
+<p>99.83%</p>
+</div>
+
+<div>
+<h4>Recall</h4>
+<p>99.12%</p>
+</div>
+
+<div>
+<h4>F1 Score</h4>
+<p>99.47%</p>
+</div>
+
+</div>
     <hr>
 
     <h3>Model Information</h3>
 
-    <p>
-        Model:
-        Random Forest
-    </p>
+    <p><b>Model Used:</b> Random Forest</p>
 
-    <p>
-        Accuracy:
-        99.55%
-    </p>
+<p><b>Dataset Size:</b> 235,795 URLs</p>
 
-    <p>
-        Dataset Size:
-        235,795 URLs
-    </p>
+<p><b>Train-Test Split:</b> 80:20</p>
+<hr>
 
+<h3>Model Comparison</h3>
+
+<table border="1" width="100%" cellpadding="10">
+
+<tr>
+<th>Model</th>
+<th>Accuracy</th>
+</tr>
+
+<tr>
+<td>Random Forest</td>
+<td>99.55%</td>
+</tr>
+
+<tr>
+<td>Decision Tree</td>
+<td>99.54%</td>
+</tr>
+
+<tr>
+<td>Logistic Regression</td>
+<td>99.34%</td>
+</tr>
+
+</table>
     <hr>
 
     <h3>Project Workflow</h3>
