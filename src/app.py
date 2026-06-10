@@ -21,7 +21,11 @@ MODEL_PATH = os.path.join(
     "model.pkl"
 )
 
-model = joblib.load(MODEL_PATH)
+try:
+    model = joblib.load(MODEL_PATH)
+except Exception as e:
+    print("Model Load Error:", e)
+    model = None
 
 @app.route("/", methods=["GET", "POST"])
 def home():
@@ -38,9 +42,19 @@ def home():
     result_color = None
 
     if request.method == "POST":
+        if model is None:
+            return render_template(
+                "index.html",
+                result="Model not loaded. Please check model.pkl"
+            )
+        url = request.form.get("url", "").strip()
 
-        url = request.form.get("url")
-        print("URL =", url)
+        if not url:
+            return render_template(
+                "index.html",
+                result="Please enter a valid URL"
+            )
+
         submitted_url = url
         print("Submitted URL =", submitted_url)
         feature_dict = extract_features(url)

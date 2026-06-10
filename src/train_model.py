@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import joblib
 from sklearn.metrics import ConfusionMatrixDisplay
@@ -13,14 +14,25 @@ from sklearn.metrics import (
 )
 
 # Load Features Dataset
-df = pd.read_csv("dataset/features.csv")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+DATASET_PATH = os.path.join(
+    BASE_DIR,
+    "..",
+    "dataset",
+    "features.csv"
+)
+
+df = pd.read_csv(DATASET_PATH)
+
+df = df.dropna()
 
 # Convert Label
 df["label"] = df["label"].map({
     "benign": 0,
     "phishing": 1
 })
-
+print(df["label"].value_counts())
 # Features
 X = df.drop("label", axis=1)
 
@@ -32,7 +44,8 @@ X_train, X_test, y_train, y_test = train_test_split(
     X,
     y,
     test_size=0.2,
-    random_state=42
+    random_state=42,
+    stratify=y
 )
 
 # Random Forest
@@ -67,9 +80,26 @@ print("Recall   :", round(recall, 4))
 print("F1 Score :", round(f1, 4))
 
 # Save Model
+
+MODEL_DIR = os.path.join(
+    BASE_DIR,
+    "..",
+    "models"
+)
+
+os.makedirs(
+    MODEL_DIR,
+    exist_ok=True
+)
+
+MODEL_PATH = os.path.join(
+    MODEL_DIR,
+    "model.pkl"
+)
+
 joblib.dump(
     model,
-    "models/model.pkl"
+    MODEL_PATH
 )
 
 print("\nModel Saved Successfully!")
@@ -80,5 +110,11 @@ ConfusionMatrixDisplay.from_estimator(
     y_test
 )
 
-plt.savefig("confusion_matrix.png")
+CM_PATH = os.path.join(
+    BASE_DIR,
+    "..",
+    "confusion_matrix.png"
+)
+
+plt.savefig(CM_PATH)
 plt.show()
