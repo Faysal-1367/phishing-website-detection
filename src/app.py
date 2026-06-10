@@ -31,9 +31,9 @@ def home():
     submitted_url = None
     recommendations = []
 
-    confidence = None
-    phishing_prob = None
-    legitimate_prob = None
+    confidence = 0
+    phishing_prob = 0
+    legitimate_prob = 0
     feature_dict = None
     result_color = None
 
